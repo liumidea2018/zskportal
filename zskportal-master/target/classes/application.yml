@@ -1,0 +1,105 @@
+# 日志配置
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+    com.haohe: debug
+    org.springframework.security: warn
+
+# 服务器配置
+server:
+  port: 8084
+  tomcat:
+    max-threads: 800
+    uri-encoding: UTF-8
+    # 日志存放处
+    basedir: E:/logs/zskportal
+  servlet:
+    session:
+      cookie:
+        name: zskportal
+      timeout: 30m
+    context-path: /
+
+spring:
+# 多配置关联
+#  profiles:
+#    active: dev
+  datasource:
+    # 自动识别数据库类型，可省略
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://rm-m5ea5wo73wzd9hq31.mysql.rds.aliyuncs.com/zsk?useUnicode=true&characterEncoding=UTF-8&useSSL=true
+    username: zhishiku_1234
+    password: SanJi1234
+    # 指定连接池，默认为 hikari
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      # 自动提交
+      # auto-commit: true
+      pool-name: ZskportalHikariCP
+      minimum-idle: 10
+      maximum-pool-size: 15
+       # 空闲连接存活最大时间，默认600000（10分钟)
+      idle-timeout: 30000
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+  aop:
+      proxy-target-class: true
+
+  messages:
+    encoding: utf-8
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  # MQ配置
+  activemq:
+    broker-url: tcp://47.104.168.172:8160
+    in-memory: true
+    pool:
+    # 如果此处设置为true，需要加如下的依赖包，否则会自动配置失败，报JmsMessagingTemplate注入失败
+      enabled: false
+      max-connections: 10000
+
+  # redis缓存设置
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    jedis:
+      pool:
+       min-idle: 8
+       max-idle: 500
+       max-active: 2000
+       max-wait: 10000
+    timeout: 0
+    database: 10
+
+mybatis:
+# 定义扫描sql文件
+  mapperLocations:
+    - "classpath*:/mybatis/*/*.xml"
+    - "classpath*:/mybatis/*.xml"
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+zsk:
+  # 是否异步记录用户操作日志
+  openAopLog: true
+  # 单次最大批量入库数量
+  max:
+    batch:
+      insert:
+        num: 1000
+  shiro:
+    # 后端免认证接口 url
+    anonUrl: /login,/checkLogin,/logout/**,/regist,/verifyCode/**,/user/check/**
+    # token有效期，单位秒
+    jwtTimeOut: 3600
+

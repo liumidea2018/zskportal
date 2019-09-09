@@ -1,0 +1,23 @@
+{
+  "groups": [
+    {
+      "name": "zsk",
+      "type": "com.haohe.zskportal.common.properties.ZskProperties",
+      "sourceType": "com.haohe.zskportal.common.properties.ZskProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "zsk.open-aop-log",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.haohe.zskportal.common.properties.ZskProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "zsk.shiro",
+      "type": "com.haohe.zskportal.common.properties.ShiroProperties",
+      "sourceType": "com.haohe.zskportal.common.properties.ZskProperties"
+    }
+  ],
+  "hints": []
+}

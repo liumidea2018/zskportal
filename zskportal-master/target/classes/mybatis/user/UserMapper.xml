@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haohe.zskportal.sys.mapper.UserMapper">
+    <resultMap id="UserVO" type="com.haohe.zskportal.sys.vo.UserVO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="wc_name" jdbcType="VARCHAR" property="wcName" />
+        <result column="sw_password" jdbcType="VARCHAR" property="swPassword" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="mechanism_id" jdbcType="INTEGER" property="mechanismId" />
+        <result column="subzone_id" jdbcType="INTEGER" property="subzoneId" />
+        <result column="hospital_id" jdbcType="INTEGER" property="hospitalId" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="is_locked" jdbcType="BIT" property="isLocked" />
+        <result column="is_enabled" jdbcType="BIT" property="isEnabled" />
+        <result column="is_expired" jdbcType="BIT" property="isExpired" />
+        <result column="is_sys" jdbcType="BIT" property="isSys" />
+
+        <!-- VO特有属性 -->
+        <result column="departmentName" property="departmentName" />
+        <result column="hospitalName" property="hospitalName" />
+        <result column="roleName" property="roleName" />
+        <result column="largeAreaName" property="largeAreaName" />
+    </resultMap>
+
+    <!-- 查询登陆用户 -->
+    <select id="selectUserInfo" parameterType="java.lang.String" resultMap="UserVO">
+        select
+        u.id,
+        u.name,
+        u.username,
+        u.password,
+        u.sw_password,
+        u.wc_name,
+        u.mechanism_id,
+        u.hospital_id,
+        u.subzone_id,
+        u.email,
+        u.is_locked,
+        u.is_enabled,
+        u.is_expired,
+        u.is_sys,
+        dept.name as departmentName,
+        hospital.official_name as hospitalName,
+        largearea.name as largeAreaName,
+        p_role.name as roleName
+        from
+        p_user u
+        left join p_mechanism_info dept on u.mechanism_id = dept.id
+        left join d_hospital hospital  on  hospital.id = u.hospital_id
+        left join d_largearea largearea  on largearea.id = u.subzone_id
+        left join p_user_role p_user_role on p_user_role.user_id = u.id
+        left join p_role p_role on p_user_role.role_id = p_role.id
+        where u.username = #{username}
+    </select>
+
+
+</mapper>
